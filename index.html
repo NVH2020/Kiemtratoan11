@@ -3,22 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài kiểm tra Toán 11 – Thay Ha</title>
+    <title>Toán Thầy Hà</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
         .nav-btn-answered { background-color: #16a34a; color: white; border-color: #15803d; }
         .nav-btn-current { background-color: #4f46e5; color: white; border-color: #4338ca; transform: scale(1.1); }
         input[type="radio"]:checked + span { font-weight: 600; color: #4f46e5; }
+        .mcq-label-selected {
+            background-color: #e0e7ff; /* indigo-100 */
+            border-color: #6366f1; /* indigo-500 */
+        }
+        /* === MÃ MỚI CHO HIỆU ỨNG NHẤP NHÁY === */
+        @keyframes blinkingColors {
+            0%, 100% { color: #22c55e; } /* Xanh lá */
+            33% { color: #ef4444; }      /* Đỏ */
+            66% { color: #eab308; }      /* Vàng */
+        }
+        .blinking-text {
+            animation: blinkingColors 3s infinite;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-        <h1 class="text-2xl font-bold text-center mb-6">Lớp Toán 11 Thầy Hà </h1>
+          <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
 
-        <!-- Form nhập thông tin -->
         <div id="userInfoSection" class="max-w-md mx-auto">
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
+	    <div class="mb-4">
+   	     <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
+<p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
+            </div>
+            
             <div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 540112)</label>
                 <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
@@ -38,13 +56,12 @@
             <button id="startBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">Bắt đầu làm bài</button>
         </div>
 
-        <!-- Phần câu hỏi -->
         <div id="quizSection" class="hidden">
             <div id="quiz-header" class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
                     <h2 id="quiz-part-title" class="text-xl md:text-2xl font-bold text-gray-800"></h2>
                     <p class="text-lg font-semibold text-blue-600">
-                        Câu <span id="question-counter">1</span> /
+                        Câu <span id="question-counter">1</span> / <span id="total-questions-display"></span>
                     </p>
                 </div>
                 <div id="timer" class="text-2xl font-bold text-red-500">60:00</div>
@@ -63,7 +80,7 @@
                 </div>
             </form>
         </div>
-        <!-- Màn hình kết quả -->
+        
         <div id="resultSection" class="hidden text-center">
             <h2 id="studentNameResult" class="text-2xl font-bold mb-2"></h2>
             <p class="text-lg mb-4">Đã hoàn thành bài kiểm tra!</p>
@@ -73,44 +90,34 @@
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
             
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
-<img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
+<img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D"
      alt="Logo Toán Thầy Hà" 
-     id="logo-modal" 
-     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
-                       <h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
+     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">                <h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
-                                        Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!
-                    <br>
-Cam kết tiến bộ và cam kết đầu ra!
-                    <br>
-Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!
-                    <br>
+                    Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
+                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!
+<br>
+                    Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!
+<br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
                 </p>
             </div>
         </div>
     </div>
 
-    <!-- Màn hình thông báo (Modal) -->
     <div id="announcementModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-            <img src="https://placehold.co/200x200/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
+            <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D"
      alt="Logo Toán Thầy Hà" 
-     id="logo-modal" 
-     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
- <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
+     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">            <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
-                                    Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!
-                    <br>
-Cam kết tiến bộ và cam kết đầu ra!
-                    <br>
-Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!
-                    <br>
-                    Liên hệ qua Zalo: <strong>0988.948.882</strong>
+               Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
+                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
+                Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!<br>
+                Liên hệ qua Zalo: <strong>0988.948.882</strong>
             </p>
             <div class="flex justify-center gap-4">
                 <button id="enterQuizBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-2 rounded">Vào thi</button>
-                <!-- === NÚT THOÁT ĐÃ ĐƯỢC CẬP NHẬT === -->
                 <button id="exitBtn" class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Thoát</button>
             </div>
         </div>
@@ -121,48 +128,254 @@ Cam kết tiến bộ và cam kết đầu ra!
         import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-  apiKey: "AIzaSyAwM9_H8PTooz3Nh4MPt9wdtBScIvMC318",
-  authDomain: "toanthayha-cd96c.firebaseapp.com",
-  projectId: "toanthayha-cd96c",
-  storageBucket: "toanthayha-cd96c.firebasestorage.app",
-  messagingSenderId: "940207284081",
-  appId: "1:940207284081:web:9801158f72cc14053ae0d0",
-  measurementId: "G-9D5ZQ66BSB"
-};
+            apiKey: "AIzaSyAwM9_H8PTooz3Nh4MPt9wdtBScIvMC318",
+            authDomain: "toanthayha-cd96c.firebaseapp.com",
+            projectId: "toanthayha-cd96c",
+            storageBucket: "toanthayha-cd96c.firebasestorage.app",
+            messagingSenderId: "940207284081",
+            appId: "1:940207284081:web:9801158f72cc14053ae0d0",
+            measurementId: "G-9D5ZQ66BSB"
+        };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const QUIZ_ID = "toanthayha_10";
+        // ==========================================================
+        // == CHỈ CẦN THAY ĐỔI MÃ KỲ THI Ở ĐÂY CHO CÁC LẦN SAU    ==
+        // ==========================================================        
+	// Gán mã kỳ thi vào phần hiển thị trong HTML
+	const EXAM_CODE = "Toan11_001";  //Mã kỳ thi(kiểm tra)
+        document.getElementById("examCodeDisplay").textContent = EXAM_CODE;
+        const QUIZ_ID = "toanthayha_11";
         const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 500;
 
         const originalQuizData = [
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Trong các câu sau, câu nào là mệnh đề?', o: ["Số 3 là số chẵn.", "Bạn tên gì?", "Hôm nay trời đẹp quá!", "Hãy học bài đi!"], a: "Số 3 là số chẵn." },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phủ định của mệnh đề P: “∀x ∈ ℝ, x² ≥ 0” là:', o: ["∃x ∈ ℝ, x² < 0", "∃x ∈ ℝ, x² ≤ 0", "∀x ∈ ℝ, x² < 0", "∀x ∈ ℝ, x² ≤ 0"], a: "∃x ∈ ℝ, x² < 0" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho tập hợp A = {1, 2, {3, 4}}. Khẳng định nào sau đây sai?', o: ["1 ∈ A", "2 ∈ A", "{3, 4} ∈ A", "3 ∈ A"], a: "3 ∈ A" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Ký hiệu nào biểu diễn khoảng từ a đến b, không bao gồm a và b?', o: ["[a; b]", "(a; b)", "[a; b)", "(a; b]"], a: "(a; b)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {1, 3, 5} và B = {1, 2, 3}. Tập hợp A ∪ B là:', o: ["{1, 3}", "{1, 2, 3, 5}", "{1, 2, 5}", "{2, 5}"], a: "{1, 2, 3, 5}" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℕ | x ≤ 4}. Liệt kê các phần tử của A.', o: ["{1, 2, 3, 4}", "{0, 1, 2, 3}", "{0, 1, 2, 3, 4}", "{1, 2, 3}"], a: "{0, 1, 2, 3, 4}" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề P ⇒ Q chỉ sai khi nào?', o: ["P đúng, Q sai", "P sai, Q đúng", "P, Q cùng đúng", "P, Q cùng sai"], a: "P đúng, Q sai" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = (–∞; 2] và B = (–1; +∞). Tập hợp A ∩ B là:', o: ["(–1; 2]", "[–1; 2]", "(–∞; +∞)", "(–1; 2)"], a: "(–1; 2]" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Số tập hợp con có 2 phần tử của tập hợp A = {a, b, c, d} là:', o: ["4", "6", "8", "10"], a: "6" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho mệnh đề P(x): “x là số nguyên tố”. Mệnh đề nào sau đây đúng?', o: ["P(4)", "P(6)", "P(8)", "P(7)"], a: "P(7)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp A = {x ∈ ℝ | x² - 4 = 0} có bao nhiêu phần tử?', o: ["0", "1", "2", "4"], a: "2" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A là tập con của B. Khẳng định nào sau đây đúng?', o: ["A ∩ B = B", "A ∪ B = A", "B \\ A = ∅", "A ∩ B = A"], a: "A ∩ B = A" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề “Nếu tam giác ABC đều thì nó có ba góc bằng 60°” có mệnh đề đảo là:', o: ["Nếu tam giác ABC có ba góc bằng 60° thì nó đều.", "Nếu tam giác ABC không đều thì nó không có ba góc bằng 60°.", "Tam giác ABC đều khi và chỉ khi nó có ba góc bằng 60°.", "Tam giác ABC đều và có ba góc bằng 60°."], a: "Nếu tam giác ABC có ba góc bằng 60° thì nó đều." },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Sử dụng ký hiệu ∀, ∃ để viết mệnh đề: “Mọi số thực cộng với 0 đều bằng chính nó”', o: ["∀x ∈ ℝ, x + 0 = x", "∃x ∈ ℝ, x + 0 = x", "∀x ∈ ℝ, x + 0 = 0", "∃x ∈ ℝ, x + 0 = 0"], a: "∀x ∈ ℝ, x + 0 = x" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp rỗng được ký hiệu là:', o: ["{0}", "0", "∅", "{∅}"], a: "∅" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = [–3; 5) và B = (2; 7]. Tập hợp A \\ B là:', o: ["[–3; 2]", "[–3; 2)", "(–3; 2]", "(5; 7]"], a: "[–3; 2]" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Câu nào sau đây không phải là mệnh đề chứa biến?', o: ["x + 2 > 5", "n là số chẵn", "Hà Nội là thủ đô của Việt Nam", "2k + 1 là số lẻ"], a: "Hà Nội là thủ đô của Việt Nam" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℤ | |x| < 3}. Số phần tử của A là:', o: ["2", "3", "4", "5"], a: "5" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phần bù của tập A = [2; +∞) trong ℝ là:', o: ["(–∞; 2]", "(–∞; 2)", "[2; +∞)", "(2; +∞)"], a: "(–∞; 2)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề nào sau đây là mệnh đề tương đương?', o: ["P ⇒ Q", "P ⇔ Q", "P ∧ Q", "P ∨ Q"], a: "P ⇔ Q" },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho tập hợp A = {1, 2} và B = {1, 2, 3}. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "A là tập con của B.", a: true }, { text: "B là tập con của A.", a: false }, { text: "A ∩ B = {1, 2, 3}.", a: false }, { text: "A ∪ B = B.", a: true } ] },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho mệnh đề P: “x > 5” và Q: “x > 3”. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "Với x = 6, mệnh đề P đúng.", a: true }, { text: "Mệnh đề P ⇒ Q là mệnh đề đúng.", a: true }, { text: "Mệnh đề Q ⇒ P là mệnh đề đúng.", a: false }, { text: "Mệnh đề P ⇔ Q là mệnh đề đúng.", a: false } ] },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho hai tập hợp A = {1, 2, 3, 4, 5} và B = {2, 4, 6, 8}. Tập hợp A ∩ B có bao nhiêu phần tử?', a: "2" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Lớp 10A có 30 học sinh giỏi Toán, 25 học sinh giỏi Lý, và 15 học sinh giỏi cả Toán và Lý. Hỏi lớp 10A có bao nhiêu học sinh giỏi ít nhất một trong hai môn Toán hoặc Lý?', a: "40" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho tập hợp M = {x ∈ ℤ | (x² - 9)(x - 1) = 0}. Tính tổng các phần tử của M.', a: "1" }
-        ];
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Đổi số đo của góc $75^\\circ$ sang đơn vị radian.",
+        "o": [
+            "$\\frac{5\\pi}{12}$",
+            "$\\frac{7\\pi}{12}$",
+            "$\\frac{\\pi}{5}$",
+            "$\\frac{5\\pi}{6}$"
+        ],
+        "a": "$\\frac{5\\pi}{12}$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Tìm tập xác định của hàm số $y = \\frac{1}{\\sin x}$.",
+        "o": [
+            "$D = \\mathbb{R} \\setminus \\{k\\pi | k \\in \\mathbb{Z}\\}$",
+            "$D = \\mathbb{R} \\setminus \\{\\frac{\\pi}{2} + k\\pi | k \\in \\mathbb{Z}\\}$",
+            "$D = \\mathbb{R}$",
+            "$D = \\mathbb{R} \\setminus \\{k2\\pi | k \\in \\mathbb{Z}\\}$"
+        ],
+        "a": "$D = \\mathbb{R} \\setminus \\{k\\pi | k \\in \\mathbb{Z}\\}$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Phương trình $\\cos x = 0$ có tập nghiệm là:",
+        "o": [
+            "$\\{\\frac{\\pi}{2} + k\\pi | k \\in \\mathbb{Z}\\}$",
+            "$\\{k\\pi | k \\in \\mathbb{Z}\\}$",
+            "$\\{k2\\pi | k \\in \\mathbb{Z}\\}$",
+            "$\\{\\frac{\\pi}{2} + k2\\pi | k \\in \\mathbb{Z}\\}$"
+        ],
+        "a": "$\\{\\frac{\\pi}{2} + k\\pi | k \\in \\mathbb{Z}\\}$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho $\\sin \\alpha = \\frac{3}{5}$ và $\\frac{\\pi}{2} < \\alpha < \\pi$. Tính giá trị của $\\cos \\alpha$.",
+        "o": [
+            "$-\\frac{4}{5}$",
+            "$\\frac{4}{5}$",
+            "$\\pm\\frac{4}{5}$",
+            "$\\frac{16}{25}$"
+        ],
+        "a": "$-\\frac{4}{5}$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Rút gọn biểu thức $A = \\cos(a+b)\\cos(a-b) - \\sin(a+b)\\sin(a-b)$.",
+        "o": [
+            "$\\cos(2a)$",
+            "$\\sin(2a)$",
+            "$\\cos(2b)$",
+            "$\\sin(2b)$"
+        ],
+        "a": "$\\cos(2a)$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Trong không gian, có bao nhiêu vị trí tương đối giữa một đường thẳng và một mặt phẳng?",
+        "o": [
+            "3",
+            "2",
+            "1",
+            "4"
+        ],
+        "a": "3"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho hình chóp S.ABCD có đáy ABCD là hình bình hành. Giao tuyến của hai mặt phẳng (SAB) và (SCD) là đường thẳng song song với đường thẳng nào sau đây?",
+        "o": [
+            "AB và CD",
+            "AC và BD",
+            "AD và BC",
+            "SA và SB"
+        ],
+        "a": "AB và CD"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho tứ diện ABCD. Gọi M, N lần lượt là trung điểm của các cạnh AB và CD. Mặt phẳng (P) chứa MN và song song với AD. Thiết diện của (P) và tứ diện là hình gì?",
+        "o": [
+            "Hình thang",
+            "Hình bình hành",
+            "Hình tam giác",
+            "Hình chữ nhật"
+        ],
+        "a": "Hình thang"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Mệnh đề nào sau đây là đúng?",
+        "o": [
+            "Nếu đường thẳng $d$ không nằm trong mặt phẳng $(P)$ và song song với một đường thẳng $a$ nằm trong $(P)$ thì $d$ song song với $(P)$.",
+            "Nếu đường thẳng $d$ song song với mặt phẳng $(P)$ thì nó song song với mọi đường thẳng nằm trong $(P)$.",
+            "Nếu hai mặt phẳng song song với nhau thì mọi đường thẳng nằm trong mặt phẳng này đều song song với mặt phẳng kia.",
+            "Nếu đường thẳng $d$ song song với mặt phẳng $(P)$ thì trong $(P)$ có duy nhất một đường thẳng song song với $d$."
+        ],
+        "a": "Nếu đường thẳng $d$ không nằm trong mặt phẳng $(P)$ và song song với một đường thẳng $a$ nằm trong $(P)$ thì $d$ song song với $(P)$."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho hình chóp S.ABCD. Điểm M nằm trên cạnh SA. Giao điểm của đường thẳng BM và mặt phẳng (SCD) là điểm nào?",
+        "o": [
+            "Giao điểm của BM và SC",
+            "Giao điểm của BM và SD",
+            "Giao điểm của BM và đường thẳng qua S song song với AB",
+            "Đường thẳng BM không cắt mặt phẳng (SCD)"
+        ],
+        "a": "Giao điểm của BM và SC"
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Xét các tính chất của hàm số lượng giác $y = \\cos x$.",
+        "s": [
+            {
+                "text": "Tập xác định của hàm số là $\\mathbb{R}$.",
+                "a": true
+            },
+            {
+                "text": "Hàm số $y = \\cos x$ là một hàm số lẻ.",
+                "a": false
+            },
+            {
+                "text": "Giá trị lớn nhất của hàm số là 1 và giá trị nhỏ nhất là -1.",
+                "a": true
+            },
+            {
+                "text": "Hàm số tuần hoàn với chu kì $T = \\pi$.",
+                "a": false
+            }
+        ]
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Cho hình chóp S.ABCD có đáy là hình thang với đáy lớn AB, đáy nhỏ CD. Gọi M, N lần lượt là trung điểm của SA và SB.",
+        "s": [
+            {
+                "text": "Đường thẳng MN song song với đường thẳng CD.",
+                "a": true
+            },
+            {
+                "text": "Đường thẳng MN song song với mặt phẳng (SCD).",
+                "a": true
+            },
+            {
+                "text": "Giao tuyến của hai mặt phẳng (SAD) và (SBC) là một đường thẳng đi qua S.",
+                "a": true
+            },
+            {
+                "text": "Đường thẳng SC cắt mặt phẳng (MND).",
+                "a": false
+            }
+        ]
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Xét phương trình lượng giác $2\\sin(x) - \\sqrt{3} = 0$.",
+        "s": [
+            {
+                "text": "Phương trình tương đương với $\\sin x = \\frac{\\sqrt{3}}{2}$.",
+                "a": true
+            },
+            {
+                "text": "Họ nghiệm của phương trình là $x=\\frac{\\pi}{3}+k2\\pi$ và $x=\\frac{2\\pi}{3}+k2\\pi$ ($k \\in \\mathbb{Z}$).",
+                "a": true
+            },
+            {
+                "text": "Trên khoảng $(0; 2\\pi)$, phương trình có đúng hai nghiệm.",
+                "a": true
+            },
+            {
+                "text": "Tổng các nghiệm của phương trình trên đoạn $[0; \\pi]$ là $\\frac{2\\pi}{3}$.",
+                "a": false
+            }
+        ]
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho $\\cos x = -\\frac{1}{3}$. Tính giá trị của biểu thức $P = \\cos(2x)$.",
+        "a": "$-\\frac{7}{9}$"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Tìm giá trị lớn nhất của hàm số $y = 3\\sin(x+\\frac{\\pi}{4}) - 1$.",
+        "a": "2"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Tìm số nghiệm của phương trình $\\tan(x - 30^\\circ) = \\sqrt{3}$ trên đoạn $[0^\\circ; 360^\\circ]$.",
+        "a": "2"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho tứ diện ABCD. Trên các cạnh AB, AC lần lượt lấy các điểm M, N sao cho $AM = \\frac{1}{3}AB$, $AN = \\frac{1}{3}AC$. Đường thẳng MN song song với mặt phẳng nào của tứ diện?",
+        "a": "(BCD)"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho hình chóp S.ABCD có đáy là hình bình hành. Gọi M là trung điểm của SA. Tìm giao điểm của đường thẳng MC và mặt phẳng (SBD).",
+        "a": "Trung điểm của MC"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho hình chóp S.ABCD có đáy là hình thang (AD // BC, AD=2BC). Gọi G là trọng tâm tam giác SCD. Đường thẳng AG song song với mặt phẳng nào?",
+        "a": "(SBC)"
+    }
+]
 
         let quizData = [];
         const totalQuestions = originalQuizData.length;
@@ -182,6 +395,7 @@ Cam kết tiến bộ và cam kết đầu ra!
         const timerElement = document.getElementById("timer");
         const quizPartTitle = document.getElementById('quiz-part-title');
         const questionCounter = document.getElementById('question-counter');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
         const questionNavPanel = document.getElementById('questionNavPanel');
         const questionText = document.getElementById('question-text');
         const answerContainer = document.getElementById('answer-container');
@@ -194,6 +408,8 @@ Cam kết tiến bộ và cam kết đầu ra!
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let quizStartTime = null;
+
+        totalQuestionsDisplay.textContent = totalQuestions; 
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -226,12 +442,25 @@ Cam kết tiến bộ và cam kết đầu ra!
             if (!studentId || !fullname || !className || !school) {
                 alert("Vui lòng nhập đầy đủ thông tin!"); return;
             }
-            currentUser = { studentId, fullname, className, school };
+            
+            currentUser = { 
+                examCode: EXAM_CODE, 
+                studentId, 
+                fullname, 
+                className, 
+                school 
+            };
+            
             const resultsRef = collection(db, "quizResults");
-            const q = query(resultsRef, where("studentId", "==", studentId), where("quizId", "==", QUIZ_ID));
+            const q = query(resultsRef, 
+                where("studentId", "==", studentId), 
+                where("quizId", "==", QUIZ_ID),
+                where("examCode", "==", EXAM_CODE) 
+            );
+            
             const snapshot = await getDocs(q);
             if (snapshot.size >= ATTEMPT_LIMIT) {
-                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
+                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần cho kỳ thi ${EXAM_CODE}. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
                 return;
             }
             
@@ -356,6 +585,7 @@ Cam kết tiến bộ và cam kết đầu ra!
             saveCurrentAnswer();
             if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
         });
+
         nextBtn.addEventListener('click', () => {
             saveCurrentAnswer();
             if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
@@ -377,13 +607,13 @@ Cam kết tiến bộ và cam kết đầu ra!
 
                 switch (q.type) {
                     case 'mcq':
-                        if (userAnswer === q.a) totalScore += 0.25;
+                        if (userAnswer === q.a) totalScore += 0.4;
                         break;
                     case 'true-false':
                         let correctCount = 0;
                         q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
-                        totalScore += pointsMap[correctCount];
+                        totalScore += pointsMap[correctCount] || 0;
                         break;
                     case 'short-answer':
                         if (userAnswer.toLowerCase() === q.a.toLowerCase()) totalScore += 1;
@@ -408,12 +638,15 @@ Cam kết tiến bộ và cam kết đầu ra!
                 });
             } catch (error) {
                 console.error("Lỗi khi lưu kết quả: ", error);
+                alert("Đã có lỗi xảy ra khi lưu kết quả của bạn. Vui lòng thử lại.");
             }
         });
 
         function renderMCQ(question) {
             const savedAnswer = userAnswers[currentQuestionIndex];
-            question.o.forEach(option => {
+            const options = [...question.o];
+            shuffleArray(options); // Xáo trộn đáp án
+            options.forEach(option => {
                 const isChecked = savedAnswer === option;
                 answerContainer.innerHTML += `
                     <div><label class="flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50">
@@ -422,6 +655,7 @@ Cam kết tiến bộ và cam kết đầu ra!
                     </label></div>`;
             });
         }
+
         function renderTrueFalse(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || [];
             question.s.forEach((statement, sIndex) => {
@@ -441,11 +675,12 @@ Cam kết tiến bộ và cam kết đầu ra!
                     </div>`;
             });
         }
+        
         function renderShortAnswer(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || '';
             answerContainer.innerHTML = `
                 <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập số (ví dụ 15 hoặc 25,5)" value="${savedAnswer}">`;
+                placeholder="Nhập đáp án(45 hoặc 20,5)" value="${savedAnswer}">`;
         }
     </script>
 </body>
